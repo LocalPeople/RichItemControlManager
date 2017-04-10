@@ -69,7 +69,11 @@
                 <MenuItem Header="打开"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Name="addMenuItem" Header="添加" IsEnabled="False">
-                    <MenuItem Header="普通文本框"></MenuItem>
+                    <MenuItem Header="输入框">
+                        <MenuItem Header="文本"></MenuItem>
+                        <MenuItem Header="整数"></MenuItem>
+                        <MenuItem Header="小数"></MenuItem>
+                    </MenuItem>
                     <MenuItem Header="文本下拉单选框"></MenuItem>
                     <MenuItem Header="文本下拉多选框"></MenuItem>
                     <MenuItem Header="图片下拉单选框"></MenuItem>

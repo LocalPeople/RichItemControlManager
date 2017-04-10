@@ -63,8 +63,14 @@ namespace RichItemsControlManager
             {
                 switch (menuItem.Header.ToString().TrimStart(' '))
                 {
-                    case "普通文本框":
+                    case "文本":
                         Add(new TextBoxItemViewModel("请输入类别", "请输入名称", ""));
+                        break;
+                    case "整数":
+                        Add(new TextBoxItemViewModel("请输入类别", "请输入名称", "0"));
+                        break;
+                    case "小数":
+                        Add(new TextBoxItemViewModel("请输入类别", "请输入名称", "0.0"));
                         break;
                     case "文本下拉单选框":
                         Add(new StringComboBoxItemViewModel("请输入类别", "请输入名称", "示例 1", new string[] { "示例 1", "示例 2" }, StringComboBoxType.Single));
