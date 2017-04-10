@@ -115,7 +115,7 @@
     <Resource Include="Resources\red-fork.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="E:\C#学习源码\ListViewDragDropManagerDemo\ListViewDragDropManager.csproj">
+    <ProjectReference Include="..\ListViewDragDropManager\ListViewDragDropManager.csproj">
       <Project>{04b22ad9-2d48-4e0e-86a5-3f11ca45f2c0}</Project>
       <Name>ListViewDragDropManager</Name>
     </ProjectReference>

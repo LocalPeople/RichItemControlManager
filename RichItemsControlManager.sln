@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichItemsControlManager", "RichItemsControlManager\RichItemsControlManager.csproj", "{B8F05435-EA05-4D3D-82D0-157F02114163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListViewDragDropManager", "E:\C#学习源码\ListViewDragDropManagerDemo\ListViewDragDropManager.csproj", "{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListViewDragDropManager", "ListViewDragDropManager\ListViewDragDropManager.csproj", "{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
