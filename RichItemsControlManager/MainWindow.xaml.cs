@@ -110,7 +110,7 @@ namespace RichItemsControlManager
                 richItemControl.ItemsSource = itemsSource;
                 addMenuItem.IsEnabled = true;
                 saveMenuItem.IsEnabled = true;
-            }
+            }// 尝试SSH推送
         }
 
         private void Open()
