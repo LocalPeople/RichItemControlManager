@@ -51,9 +51,8 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="XcWpfControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ScaffoldTool\WpfScaffoldControlLib\bin\Debug\XcWpfControlLib.dll</HintPath>
+    <Reference Include="XcWpfControlLib">
+      <HintPath>..\..\..\..\..\Source\Repos\ScaffoldTools\WpfScaffoldControlLib\bin\Debug\XcWpfControlLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
