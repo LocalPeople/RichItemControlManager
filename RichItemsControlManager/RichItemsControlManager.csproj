@@ -52,7 +52,8 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="XcWpfControlLib">
-      <HintPath>..\..\..\..\..\Source\Repos\ScaffoldTools\WpfScaffoldControlLib\bin\Debug\XcWpfControlLib.dll</HintPath>
+      <HintPath>..\..\ScaffoldTool\WpfScaffoldControlLib\bin\Debug\XcWpfControlLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
