@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +19,12 @@ namespace RichItemsControlManager
     /// <summary>
     /// KeyValueItem.xaml 的交互逻辑
     /// </summary>
-    public partial class KeyValueItem : UserControl
+    public partial class KeyValueItem : UserControl, INotifyPropertyChanged
     {
         public static readonly DependencyProperty KeyProperty = DependencyProperty.Register("Key", typeof(string), typeof(KeyValueItem));
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(KeyValueItem));
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Key
         {
@@ -32,12 +35,21 @@ namespace RichItemsControlManager
         public string Value
         {
             get { return (string)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            set
+            {
+                SetValue(ValueProperty, value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
+            }
         }
 
         public KeyValueItem()
         {
             InitializeComponent();
+        }
+
+        public void Update()
+        {
+            textBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
     }
 }

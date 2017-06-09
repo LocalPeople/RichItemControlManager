@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using Wpf = System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -16,8 +16,10 @@ using XcWpfControlLib.Control;
 using WPF.JoshSmith.ServiceProviders.UI;
 using System.Globalization;
 using System.Collections.ObjectModel;
-using System.Windows.Forms;
+using WinForm = System.Windows.Forms;
 using System.IO;
+using System.Collections.Specialized;
+using WPF.JoshSmith.Controls.Utilities;
 
 namespace RichItemsControlManager
 {
@@ -30,12 +32,13 @@ namespace RichItemsControlManager
         /// <summary>
         /// 图片存储根目录
         /// </summary>
-        string imgDir;
+        //string imgDir;
         /// <summary>
         /// 配置文件路径
         /// </summary>
-        string configPath;
+        //string configPath;
         ObservableCollection<RichItemViewModel> itemsSource;
+        ObservableCollection<RichItemViewModel> itemsSourceToDisplay;
         public static string ImgsInput;
 
         public MainWindow()
@@ -50,7 +53,23 @@ namespace RichItemsControlManager
             mainMenu.AddHandler(System.Windows.Controls.MenuItem.ClickEvent, new RoutedEventHandler(MenuItem_Click));
         }
 
-        private void listView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ItemsSource_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    itemsSourceToDisplay.Add(e.NewItems[0] as RichItemViewModel);
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    itemsSourceToDisplay.Move(e.OldStartingIndex, e.NewStartingIndex);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    itemsSourceToDisplay.Remove(e.OldItems[0] as RichItemViewModel);
+                    break;
+            }
+        }
+
+        private void listView_SelectionChanged(object sender, Wpf.SelectionChangedEventArgs e)
         {
             dataPanel.DataContext = listView.SelectedItem;
             ImgsInput = imgsTextBox.Value;
@@ -58,7 +77,7 @@ namespace RichItemsControlManager
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            HeaderedItemsControl menuItem = e.OriginalSource as HeaderedItemsControl;
+            Wpf.HeaderedItemsControl menuItem = e.OriginalSource as Wpf.HeaderedItemsControl;
             if (menuItem != null)
             {
                 switch (menuItem.Header.ToString().TrimStart(' '))
@@ -96,41 +115,45 @@ namespace RichItemsControlManager
 
         private void Save()
         {
+            appDirectory.Update();
+            string[] directorys = appDirectory.Value.TrimEnd(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar);
+            string configPath = Path.Combine(appDirectory.Value, directorys[directorys.Length - 1] + ".xml");
+            string imgDir = Path.Combine(appDirectory.Value, "Image");
+            Directory.CreateDirectory(imgDir);
+            richItemControl.ImageDir = imgDir;
             RichItemsControlXmlUtil.Write(itemsSource, configPath);
         }
 
         private void New()
         {
-            SaveFileDialog saveFileDialg = new SaveFileDialog();
-            saveFileDialg.AddExtension = true;
-            saveFileDialg.DefaultExt = "xml";
-            saveFileDialg.Filter = "xml文件格式 (*.xml)|*.xml";
-            if (saveFileDialg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            WinForm.FolderBrowserDialog folderDialg = new WinForm.FolderBrowserDialog();
+            folderDialg.ShowNewFolderButton = true;
+            if (folderDialg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                configPath = saveFileDialg.FileName;
-                imgDir = Path.Combine(Path.GetDirectoryName(configPath), "Image");
-                Directory.CreateDirectory(imgDir);
+                appDirectory.Value = folderDialg.SelectedPath;
                 itemsSource = new ObservableCollection<RichItemViewModel>();
+                itemsSource.CollectionChanged += ItemsSource_CollectionChanged;
                 listView.ItemsSource = itemsSource;// ListView列表初始化
-                richItemControl.ImageDir = imgDir;// 界面预览初始化
-                richItemControl.ItemsSource = itemsSource;
+                itemsSourceToDisplay = new ObservableCollection<RichItemViewModel>(itemsSource);
+                richItemControl.ItemsSource = itemsSourceToDisplay;
                 addMenuItem.IsEnabled = true;
                 saveMenuItem.IsEnabled = true;
-            }// 尝试SSH推送
+            }
         }
 
         private void Open()
         {
-            OpenFileDialog openFileDialg = new OpenFileDialog();
+            WinForm.OpenFileDialog openFileDialg = new WinForm.OpenFileDialog();
             openFileDialg.Filter = "xml文件格式 (*.xml)|*.xml|任何文件格式 (*.*)|*.*";
             if (openFileDialg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                configPath = openFileDialg.FileName;
-                imgDir = Path.Combine(Path.GetDirectoryName(configPath), "Image");
-                itemsSource = RichItemsControlXmlUtil.Read(configPath);
+                appDirectory.Value = Path.GetDirectoryName(openFileDialg.FileName);
+                itemsSource = RichItemsControlXmlUtil.Read(openFileDialg.FileName);
+                itemsSource.CollectionChanged += ItemsSource_CollectionChanged;
                 listView.ItemsSource = itemsSource;// ListView列表初始化
-                richItemControl.ImageDir = imgDir;// 界面预览初始化
-                richItemControl.ItemsSource = itemsSource;
+                itemsSourceToDisplay = new ObservableCollection<RichItemViewModel>(itemsSource);
+                richItemControl.ItemsSource = itemsSourceToDisplay;
+                richItemControl.ImageDir = Path.Combine(appDirectory.Value, "Image");
                 addMenuItem.IsEnabled = true;
                 saveMenuItem.IsEnabled = true;
             }
@@ -145,10 +168,40 @@ namespace RichItemsControlManager
 
         private void img_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Image img = (Image)sender;
+            Wpf.Image img = (Wpf.Image)sender;
             itemsSource.Remove((RichItemViewModel)img.Tag);
             dataPanel.DataContext = null;
             dragMgr.CancelDrag();// 取消列表拖拽事件
+        }
+
+        string clipBoardTxt = string.Empty;
+        private void ListView_ContextMenuOpening(object sender, Wpf.ContextMenuEventArgs e)
+        {
+            Wpf.ListView listView = (Wpf.ListView)sender;
+            if (listView.SelectedIndex != -1)
+            {
+                Wpf.ListViewItem item = listView.ItemContainerGenerator.ContainerFromIndex(listView.SelectedIndex) as Wpf.ListViewItem;
+                foreach (Wpf.TextBlock txtBlock in VisualUtil.FindChildren<Wpf.TextBlock>(item))
+                {
+                    Point mousePos = MouseUtilities.GetMousePosition(txtBlock);
+                    Rect bounds = VisualTreeHelper.GetDescendantBounds(txtBlock);
+                    if (bounds.Contains(mousePos))
+                    {
+                        clipBoardTxt = txtBlock.Text;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(clipBoardTxt))
+                Clipboard.SetDataObject(clipBoardTxt);
         }
     }
 

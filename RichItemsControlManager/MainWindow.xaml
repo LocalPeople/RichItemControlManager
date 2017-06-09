@@ -83,19 +83,30 @@
             </MenuItem>
         </Menu>
 
-        <GroupBox Header="数据详情" Margin="4" Padding="2" Grid.Row="1">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <StackPanel Name="dataPanel" Grid.IsSharedSizeScope="True">
-                    <local:KeyValueItem Key="类别：" Value="{Binding Group, Mode=TwoWay}" />
-                    <local:KeyValueItem Key="名称：" Value="{Binding Name, Mode=TwoWay}" />
-                    <local:KeyValueItem Key="默认值：" Value="{Binding Value, Mode=TwoWay, Converter={StaticResource ImgTextBoxConvert}}" />
-                    <local:KeyValueItem Key="文本下拉选择项：" Value="{Binding StringsSource, Mode=TwoWay, Converter={StaticResource StringSourceConvert}}" Visibility="{Binding Converter={StaticResource StringSourceVisibilityConvert}}" />
-                    <local:KeyValueItem x:Name="imgsTextBox" Key="图片下拉选择项：" Value="{Binding ImagesSource, Mode=TwoWay, Converter={StaticResource ImageSourceConvert}}" Visibility="{Binding Converter={StaticResource ImageSourceVisibilityConvert}}" />
-                </StackPanel>
-            </ScrollViewer>
-        </GroupBox>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel>
+                <local:KeyValueItem x:Name="appDirectory" Margin="6,4" Key="当前目标路径：" />
+                <!--<Rectangle Height="1" Fill="Gray" Margin="6,0" />-->
+                <GroupBox Header="数据详情" Margin="4" Padding="2">
+                    <StackPanel Name="dataPanel" Grid.IsSharedSizeScope="True">
+                        <local:KeyValueItem Key="类别：" Value="{Binding Group, Mode=TwoWay}" />
+                        <local:KeyValueItem Key="名称：" Value="{Binding Name, Mode=TwoWay}" />
+                        <local:KeyValueItem Key="默认值：" Value="{Binding Value, Mode=TwoWay, Converter={StaticResource ImgTextBoxConvert}}" />
+                        <local:KeyValueItem Key="文本下拉选择项：" Value="{Binding StringsSource, Mode=TwoWay, Converter={StaticResource StringSourceConvert}}" Visibility="{Binding Converter={StaticResource StringSourceVisibilityConvert}}" />
+                        <local:KeyValueItem x:Name="imgsTextBox" Key="图片下拉选择项：" Value="{Binding ImagesSource, Mode=TwoWay, Converter={StaticResource ImageSourceConvert}}" Visibility="{Binding Converter={StaticResource ImageSourceVisibilityConvert}}" />
+                    </StackPanel>
+                </GroupBox>
+                <!--<Button Name="imgBtn" Margin="6,4" HorizontalAlignment="Stretch" Width="Auto">添加图片</Button>-->
+            </StackPanel>
+        </ScrollViewer>
         <ListView Name="listView" Grid.Row="2" Margin="4" SelectionMode="Single" ItemContainerStyle="{StaticResource ItemContStyle}"
-          SelectionChanged="listView_SelectionChanged">
+          SelectionChanged="listView_SelectionChanged"
+          ContextMenuOpening="ListView_ContextMenuOpening" >
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="复制(_C)" Click="Copy_Click"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="类别" Width="85" DisplayMemberBinding="{Binding Group, Mode=OneWay}" />

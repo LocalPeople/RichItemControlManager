@@ -408,7 +408,9 @@ namespace WPF.JoshSmith.ServiceProviders.UI
                 // new index (according to where the mouse cursor is).  If it was
                 // not previously in the ListBox, then insert the item.
                 if (oldIndex > -1)
+                {
                     itemsSource.Move(oldIndex, newIndex);
+                }
                 else
                     itemsSource.Insert(newIndex, ListViewDragDropManager<ItemType>.itemInDrag);
 
