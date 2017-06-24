@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichItemsControlManager", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListViewDragDropManager", "ListViewDragDropManager\ListViewDragDropManager.csproj", "{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserUI", "UserUI\UserUI.csproj", "{EE0543B0-329A-4292-AD99-0F1423795CD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE0543B0-329A-4292-AD99-0F1423795CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE0543B0-329A-4292-AD99-0F1423795CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE0543B0-329A-4292-AD99-0F1423795CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE0543B0-329A-4292-AD99-0F1423795CD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
