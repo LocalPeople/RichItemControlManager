@@ -58,10 +58,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Control\ExpandTreeViewItem.cs" />
+    <Compile Include="Event\SectionChangedEventArgs.cs" />
     <Compile Include="SectionShowControl.xaml.cs">
       <DependentUpon>SectionShowControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\DataReader.cs" />
+    <Compile Include="XML\DataXmlManager.cs" />
     <Page Include="LeftTreeViewControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,6 +114,7 @@
   <ItemGroup>
     <Resource Include="Resources\img-error.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

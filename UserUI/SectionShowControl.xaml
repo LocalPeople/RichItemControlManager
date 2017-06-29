@@ -12,12 +12,36 @@
             <RowDefinition Height="1"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="1"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <ComboBox Name="comboBox" Grid.Row="1" ItemsSource="{Binding}" DisplayMemberPath="Name" SelectionChanged="comboBox_SelectionChanged" />
-        <Image Name="image" Grid.Row="2" Stretch="Uniform" Margin="0,2" />
-        <xcui:RichItemsControl x:Name="richItemsControl" Grid.Row="3" Margin="0,2,0,0" />
+        <StackPanel Grid.Row="1">
+            <TextBlock Name="caption" Text="当前编辑项：" Margin="0,0,0,2" />
+            <xcui:ImageComboBox Name="comboBox" ItemsSource="{Binding}" SelectionChanged="comboBox_SelectionChanged" DisplayProperty="Name">
+                <xcui:ImageComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1.5" BorderBrush="{Binding (TextElement.Foreground), RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}" CornerRadius="2"  Margin="4">
+                            <StackPanel Width="150">
+                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="2" />
+                                <Image Width="100" Height="50" Stretch="Fill" Source="{Binding Path=Configuration.Image}" HorizontalAlignment="Center" Margin="2,2,2,4">
+                                    <Image.ToolTip>
+                                        <ToolTip DataContext="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}">
+                                            <Image Source="{Binding Source}" Height="500" Width="500" Stretch="Fill" />
+                                        </ToolTip>
+                                    </Image.ToolTip>
+                                </Image>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </xcui:ImageComboBox.ItemTemplate>
+            </xcui:ImageComboBox>
+        </StackPanel>
+        <GroupBox Grid.Row="2" Header="显示图像" Margin="0,2" Padding="2">
+            <Image Name="image" Stretch="Fill" />
+        </GroupBox>
+        <GroupBox Grid.Row="3" Header="编辑数据" Margin="0,2,0,0" Padding="2">
+            <xcui:RichItemsControl x:Name="richItemsControl" />
+        </GroupBox>
     </Grid>
 </UserControl>

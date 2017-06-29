@@ -33,7 +33,7 @@ namespace UserUI.Util
                 if ((depth > 0 && section.Depth >= depth) || Section.CanStopSearch(section.Directory))
                 {
                     section.SetConfiguration(new SectionConfiguration(section.Directory));
-                    section.HideInTreeView();
+                    section.SetIsLeap();
                 }
                 else
                 {

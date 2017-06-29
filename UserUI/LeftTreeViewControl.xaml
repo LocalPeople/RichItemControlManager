@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UserUI"
         mc:Ignorable="d"
-        Title="UserUI" Height="700" Width="1000">
+        Title="UserUI" Height="700" Width="1000" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TreeView Name="treeView" Margin="4" Grid.Column="0" SelectedItemChanged="treeView_SelectedItemChanged"></TreeView>
-        <local:SectionShowControl x:Name="sectionShowControl" Margin="4" Grid.Column="1" DataContext="{Binding Path=SectionGroup, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"></local:SectionShowControl>
+        <TreeView Name="treeView" Margin="4" Grid.Column="0" SelectedItemChanged="treeView_SelectedItemChanged" MouseLeftButtonDown="treeView_MouseLeftButtonDown"></TreeView>
+        <local:SectionShowControl x:Name="sectionShowControl" Margin="4" Grid.Column="1" DataContext="{Binding Path=SectionGroup, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" SectionChanged="sectionShowControl_SectionChanged"></local:SectionShowControl>
     </Grid>
 </Window>

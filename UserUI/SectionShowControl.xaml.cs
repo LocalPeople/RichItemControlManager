@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using UserUI.Event;
 using XcWpfControlLib.Control;
 using XcWpfControlLib.DataXml;
 
@@ -24,6 +14,9 @@ namespace UserUI
     public partial class SectionShowControl : UserControl
     {
         static ObservableCollection<RichItemViewModel> EmptyCollection = new ObservableCollection<RichItemViewModel>();
+        Data.Section unSaveSection;
+
+        public event EventHandler<SectionChangedEventArgs> SectionChanged;
 
         public SectionShowControl()
         {
@@ -32,18 +25,46 @@ namespace UserUI
 
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Data.Section section = comboBox.SelectedItem as Data.Section;
-            if (section != null)
+            SaveLastSection();
+            if (e.AddedItems.Count > 0)
             {
-                InitSectionUi(section);
+                InitSectionUi(e.AddedItems[0] as Data.Section);
+                unSaveSection = e.AddedItems[0] as Data.Section;
+                SectionChanged?.Invoke(this, new SectionChangedEventArgs((Data.Section)e.AddedItems[0], e.RemovedItems.Count > 0 ? (Data.Section)e.RemovedItems[0] : null));
             }
         }
 
         private void InitSectionUi(Data.Section section)
         {
             image.Source = new BitmapImage(new Uri(section.Configuration.Image));
-            richItemsControl.ItemsSource = RichItemsControlXmlUtil.Read(section.Configuration.File);
-            richItemsControl.ImageDir = System.IO.Path.Combine(section.Directory.FullName, "Image");
+            if (!string.IsNullOrEmpty(section.Configuration.File))
+            {
+                richItemsControl.ItemsSource = RichItemsControlXmlUtil.Read(section.Configuration.File);
+                richItemsControl.ImageDir = System.IO.Path.Combine(section.Directory.FullName, "Image");
+            }
+            else
+            {
+                richItemsControl.ItemsSource = EmptyCollection;
+            }
+        }
+
+        public void SetCaption(string caption)
+        {
+            this.caption.Text = "当前编辑项：" + caption;
+        }
+
+        public void SetComboBoxSelectedItem(object item)
+        {
+            comboBox.SelectedItem = item;
+        }
+
+        public void SaveLastSection()
+        {
+            if (unSaveSection != null && !string.IsNullOrEmpty(unSaveSection.Configuration.File))
+            {
+                RichItemsControlXmlUtil.Write(richItemsControl.ItemsSource, unSaveSection.Configuration.File);
+                unSaveSection = null;
+            }
         }
     }
 }

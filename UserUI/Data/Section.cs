@@ -11,14 +11,14 @@ namespace UserUI.Data
 {
     public class Section
     {
-        public static List<Section> EmptyList = new List<Section>();
+        public static List<Section> EmptyGroup = new List<Section>();
 
         SectionConfiguration configuration;
         int depth;
         DirectoryInfo directory;
         List<Section> group;
         Section parent;
-        bool isTreeViewShow;
+        bool isLeap;
 
         public SectionConfiguration Configuration { get { return configuration; } }
         public int Depth { get { return depth; } }
@@ -34,7 +34,7 @@ namespace UserUI.Data
         }
         public string Name { get { return directory.Name; } }
         public Section Parent { get { return parent; } }
-        public bool IsTreeViewShow { get { return isTreeViewShow; } }
+        public bool IsLeap { get { return isLeap; } }
 
         public Section()
         {
@@ -45,7 +45,7 @@ namespace UserUI.Data
             this.directory = directory;
             this.depth = depth;
             this.parent = parent;
-            isTreeViewShow = true;
+            isLeap = false;
         }
 
         public Section(DirectoryInfo directory, int depth, Section parent, SectionConfiguration configuration) : this(directory, depth, parent)
@@ -83,9 +83,25 @@ namespace UserUI.Data
             return canStopSearch;
         }
 
-        public void HideInTreeView()
+        public void SetIsLeap()
         {
-            isTreeViewShow = false;
+            isLeap = true;
+        }
+
+        public string[] GetRelation()
+        {
+            string[] relation = new string[depth];
+            RelationSetting(this, relation);
+            return relation;
+        }
+
+        private void RelationSetting(Section section, string[] relation)
+        {
+            if (section.parent.depth > 0)
+            {
+                RelationSetting(section.parent, relation);
+            }
+            relation[section.depth - 1] = section.Name;
         }
     }
 }
