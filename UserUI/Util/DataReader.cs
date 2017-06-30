@@ -10,21 +10,31 @@ namespace UserUI.Util
 {
     static class DataReader
     {
-        public static Section Read(string root, int depth)
+        public static Section Read(string root, int depth, string[] order)
         {
             if (!Directory.Exists(root))
                 throw new DirectoryNotFoundException(string.Format("指定目录不存在:\n{0}", root));
             DirectoryInfo rootInfo = new DirectoryInfo(root);
-            return Read(rootInfo, depth);
+            return Read(rootInfo, depth, order);
         }
 
-        public static Section Read(DirectoryInfo root, int depth)
+        public static Section Read(DirectoryInfo root, int depth, string[] order)
         {
             Section rootSection = new Section();
             Queue<Section> BFSQueue = new Queue<Section>();
-            foreach (DirectoryInfo child in root.GetDirectories())
+            DirectoryInfo[] childDirectory = root.GetDirectories();
+            int loop = 0;
+            foreach (string right in order)
             {
-                BFSQueue.Enqueue(new Section(child, 1, rootSection));
+                int loopLimit = 0;
+                while (++loopLimit <= childDirectory.Length && right != childDirectory[loop].Name)
+                {
+                    loop = loop < childDirectory.Length - 1 ? loop + 1 : 0;
+                }
+                if (loopLimit <= childDirectory.Length)
+                {
+                    BFSQueue.Enqueue(new Section(childDirectory[loop], 1, rootSection));
+                }
             }
             while (BFSQueue.Count > 0)
             {

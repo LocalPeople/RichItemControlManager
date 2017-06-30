@@ -34,7 +34,7 @@ namespace UserUI
         {
             InitializeComponent();
             string package = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(LeftTreeViewControl).Assembly.Location), "节点图");
-            Data.Section root = DataReader.Read(package, 0);
+            Data.Section root = DataReader.Read(package, 0, new string[] { "柱、墙柱", "剪力墙", "框架梁", "非框架梁", "板", "空心楼盖", "基础", "基础主梁、承台梁", "基础次梁", "砌体结构", "其他" });
             if (DataXmlManager.Exist(package))
             {
                 dataXmlMgr = new DataXmlManager(package);

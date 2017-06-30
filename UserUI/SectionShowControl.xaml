@@ -22,7 +22,7 @@
                 <xcui:ImageComboBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="1.5" BorderBrush="{Binding (TextElement.Foreground), RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}" CornerRadius="2"  Margin="4">
-                            <StackPanel Width="150">
+                            <StackPanel Width="130">
                                 <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="2" />
                                 <Image Width="100" Height="50" Stretch="Fill" Source="{Binding Path=Configuration.Image}" HorizontalAlignment="Center" Margin="2,2,2,4">
                                     <Image.ToolTip>

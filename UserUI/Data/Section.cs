@@ -62,7 +62,7 @@ namespace UserUI.Data
         {
             if (string.IsNullOrEmpty(configuration.Image))
             {
-                MessageBox.Show("发现错误:\n" + directory.FullName, "文件夹结构有误……");
+                MessageBox.Show("发现错误:\n\n" + directory.FullName, "文件夹结构有误……");
             }
             this.configuration = configuration;
         }
