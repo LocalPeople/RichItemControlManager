@@ -27,7 +27,7 @@ namespace UserUI.Data
         {
             get
             {
-                if (group == null)
+                if (group == null)  
                     group = new List<Section>();
                 return group;
             }

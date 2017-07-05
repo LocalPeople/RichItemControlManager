@@ -38,7 +38,7 @@
             </xcui:ImageComboBox>
         </StackPanel>
         <GroupBox Grid.Row="2" Header="显示图像" Margin="0,2" Padding="2">
-            <Image Name="image" Stretch="Fill" />
+            <xcui:ImageViewer Name="image" Stretch="Uniform"/>
         </GroupBox>
         <GroupBox Grid.Row="3" Header="编辑数据" Margin="0,2,0,0" Padding="2">
             <xcui:RichItemsControl x:Name="richItemsControl" />
